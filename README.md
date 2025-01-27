@@ -1,6 +1,6 @@
 # Foundations of Machine Learning Notes and Exercises
 
-This repository contains personal notes and exercises from the **Foundations of Machine Learning** course (A.Y. 2024/25), taught by **Prof. Tommaso Di Noia** as part of the **Master’s program in Artificial Intelligence and Data Science** at **PoliBa – Polytechnic University of Bari**.
+This repository contains personal notes and code exercises from the **Foundations of Machine Learning** course (A.Y. 2024/25), taught by **Prof. Tommaso Di Noia** as part of the **Master’s program in Artificial Intelligence and Data Science** at **PoliBa – Polytechnic University of Bari**.
 
 ---
 
@@ -52,7 +52,7 @@ A **Jupyter Notebook** is an interactive environment for writing code, running i
      ```
    You’ll know it's active when you see (ml_venv) at the start of the terminal prompt.
 
-6. After activating the virtual environment, open the 00_intro.ipynb notebook in VSCode and follow the instructions inside. This notebook is specifically designed to help you set up and get familiar with working in Jupyter Notebooks. If you are already familiar with it you can skip it. 
+6. After activating the virtual environment, open the `00_intro.ipynb` notebook (`code` directory) in VSCode and follow the instructions inside. This notebook is specifically designed to help you set up and get familiar with working in Jupyter Notebooks. If you are already familiar with it you can skip it. 
 
 Once you've completed the steps, you'll be all set to start exploring the other notebooks in this repository!
 
