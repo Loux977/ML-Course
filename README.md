@@ -25,7 +25,7 @@ This repository primarily uses **Jupyter Notebooks** instead of Python scripts.
 A **Jupyter Notebook** is an interactive environment for writing code, running it, and displaying the output — all in a single document. It’s especially useful for exploring data and creating visualizations while providing rich markdown for explanations.
 
 
-### 🛠️ How to Use Code This Repository
+### 🛠️ How to Use This Repository
 
 1. Download and install [Visual Studio Code](https://code.visualstudio.com/) on your system.  
 
@@ -38,24 +38,23 @@ A **Jupyter Notebook** is an interactive environment for writing code, running i
      git clone https://github.com/Loux977/ML-Course.git
      ```
 
-4. Using the built-in terminal in VSCode move into the `code` directory and create a new virtual environment:
+4. Move into the `code` directory and create a new virtual environment called `ml_venv`:
    ```bash
    cd code
    python -m venv ml_venv
-     ```
-    This virtual environment will be used to manage the required libraries locally.
+   ```
+    A virtual environment is a self-contained directory where Python projects can store dependencies. This keeps your project dependencies isolated from other projects.
 
 5. Activate the virtual environment:
     ```bash
     Linux/macOS: source ml_venv/bin/activate
     Windows:     ml_venv\Scripts\activate
      ```
-6. Select a Kernel to execute the code: in VSCode, the Kernel dropdown at the top of the interface allows you to select the Python interpreter associated with your virtual environment (e.g., `ml_venv`).
+   You’ll know it's active when you see (ml_venv) at the start of the terminal prompt.
 
-7. Install the required libraries when prompted while running the notebooks. For instance if you encounter an error like `ModuleNotFoundError: No module named 'numpy'`, install the missing library by running the following command:  
-   ```bash
-   pip install <library-name>
-   ```
+6. After activating the virtual environment, open the 00_intro.ipynb notebook in VSCode and follow the instructions inside. This notebook is specifically designed to help you set up and get familiar with working in Jupyter Notebooks. If you are already familiar with it you can skip it. 
+
+Once you've completed the steps, you'll be all set to start exploring the other notebooks in this repository!
 
 ## 🌟 Contribute or Share
 
