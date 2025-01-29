@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from libraries.metrics import ClassificationMetrics
+from scratch_libraries.metrics import ClassificationMetrics
 
 
 # Define the sigmoid activation function
@@ -152,12 +152,11 @@ class NeuralNetwork:
 
         values = self.forward_propagation(X_test)
         pred = values["A" + str(self.n_layers - 1)]
-        return np.round(pred)
+        return np.round(pred.T) # here the trasponse is used to return back to our original notation
 
     # Compute classification performance metrics
     def compute_performance(self, preds, y):
-        clf_metrics = ClassificationMetrics(self)
-        return clf_metrics.compute_performance(preds.squeeze(), y)
+        return ClassificationMetrics(self).compute_performance(preds, y)
 
     # Plot the training loss curve
     def plot_loss(self):

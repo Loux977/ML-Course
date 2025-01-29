@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from libraries.metrics import RegressionMetrics
+from scratch_libraries.metrics import RegressionMetrics
 
 def sigmoid(z):
     return 1 / (1 + np.exp(-z))
@@ -48,8 +48,8 @@ class NeuralNetwork:
     # Compute the cost function with L2 regularization
     def compute_cost(self, values, y):
         
-        # Extract the predicted values , i.e. the values in output from the last layer Z^[L]
-        pred = values["Z" + str(self.n_layers - 1)]
+        # Extract the predicted values , i.e. the values in output from the last layer A^[L]=Z^[L]
+        pred = values["A" + str(self.n_layers - 1)]
         # Compute the Mean Squared Error (MSE) loss
         cost = 1/2 * np.average((pred - y) ** 2)
         
@@ -120,12 +120,10 @@ class NeuralNetwork:
         X_test = X_test.T
 
         values = self.forward_propagation(X_test)
-        pred = values["A" + str(self.n_layers - 1)]
-        return np.round(pred)
+        return values["A" + str(self.n_layers - 1)].T # here the trasponse is used to return back to our original notation
 
     def compute_performance(self, preds, y):
-        clf_metrics = RegressionMetrics(self)
-        return clf_metrics.compute_performance(preds.squeeze(), y)
+        return RegressionMetrics(self).compute_performance(preds, y)
 
     def plot_loss(self):
         plt.plot(self.loss)
