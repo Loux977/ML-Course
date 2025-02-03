@@ -1,10 +1,10 @@
 import numpy as np
 
 class LogisticRegression:
-    def __init__(self, learning_rate, n_features, n_steps, random_state=123):
+    def __init__(self, learning_rate, n_features, n_steps, seed=123):
         # Set a seed for random number generation to ensure reproducibility
-        self.random_state = random_state
-        np.random.seed(self.random_state)
+        self.seed = seed
+        np.random.seed(self.seed)
 
         self.learning_rate = learning_rate
         self.n_steps = n_steps
@@ -14,7 +14,7 @@ class LogisticRegression:
     def sigmoid(z):
         return 1 / (1 + np.exp(-z))
 
-    def fit_full_batch(self, x, y):
+    def fit_fbgd(self, x, y):
         m = len(x)
         cost_history = np.zeros(self.n_steps)
         theta_history = np.zeros((self.n_steps, self.theta.shape[0]))

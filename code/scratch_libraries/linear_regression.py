@@ -6,7 +6,7 @@ class LinearRegression:
     and one method to produce a full prediction based on input samples. Moreover, this one is equipped by one method to
     measure performance and another method to build learning curves
     """
-    def __init__(self, learning_rate=1e-2, n_steps=200, n_features=1, lmd=0.01, random_state=123):
+    def __init__(self, learning_rate=1e-2, n_steps=200, n_features=1, lmd=0.01, seed=123):
         """
         :param learning_rate: learning rate value
         :param n_steps: number of epochs for the training
@@ -14,8 +14,8 @@ class LinearRegression:
         :param lmd: regularization factor -> lmd_ is an array useful when is necessary compute theta's update with regularization factor
         """
         # Set a seed for random number generation to ensure reproducibility
-        self.random_state = random_state
-        np.random.seed(self.random_state)
+        self.seed = seed
+        np.random.seed(self.seed)
 
         self.learning_rate = learning_rate
         self.n_steps = n_steps
@@ -26,7 +26,7 @@ class LinearRegression:
         self.lmd_ = np.full(n_features, lmd)
         self.lmd_[0] = 0
 
-    def fit_fullbatch(self, X_train, y_train):
+    def fit_fbgd(self, X_train, y_train):
         """
         apply full batch gradient descent, without regularization, to the training set and return the evolution
         history of train and validation costs.
@@ -52,7 +52,7 @@ class LinearRegression:
 
         return cost_history, theta_history
 
-    def fit_fullbatch_regularization(self, X_train, y_train):
+    def fit_regularized_fbgd(self, X_train, y_train):
         m=len(X_train)
         cost_history = np.zeros(self.n_steps)
         theta_history= np.zeros((self.n_steps, self.theta.shape[0]))
@@ -63,13 +63,13 @@ class LinearRegression:
             self.theta = self.theta - self.learning_rate * 1/m * (np.dot(X_train.T, error) + self.lmd_ * self.theta) # + derivative of l2 regularization
 
             # Just for logging
-            cost_history[step]= 1/(2*m) * (np.dot(error.T,error) + self.lmd * np.dot(self.theta[1:].T, self.theta[1:])) # l2 regularization            
+            cost_history[step]= 1/(2*m) * (np.dot(error.T,error) + self.lmd * np.dot(self.theta[1:].T, self.theta[1:])) # + l2 regularization            
             theta_history[step, :] = self.theta.T
         
         return cost_history, theta_history
 
 
-    def fit_sgd_with_random_sampling(self, X_train, y_train):
+    def fit_sgd(self, X_train, y_train):
         m=len(X_train)
         cost_history = np.zeros(self.n_steps)
         theta_history= np.zeros((self.n_steps, self.theta.shape[0]))
@@ -92,7 +92,7 @@ class LinearRegression:
 
         return cost_history, theta_history
 
-    def fit_sgd(self, X_train, y_train):
+    def fit_sgd_v2(self, X_train, y_train):
         m=len(X_train)
         cost_history = np.zeros(self.n_steps)
         theta_history= np.zeros((self.n_steps, self.theta.shape[0]))
@@ -114,7 +114,7 @@ class LinearRegression:
         return cost_history, theta_history
 
 
-    def fit_minibatch_with_random_sampling(self, X_train, y_train, batch_size=4):
+    def fit_mbgd(self, X_train, y_train, batch_size=4):
         m = len(X_train)
         cost_history = np.zeros(self.n_steps)
         theta_history = np.zeros((self.n_steps, self.theta.shape[0]))
@@ -141,7 +141,7 @@ class LinearRegression:
         return cost_history, theta_history
 
 
-    def fit_minibatch(self, X_train, y_train, batch_size=4):
+    def fit_mbgd_v2(self, X_train, y_train, batch_size=4):
         m = len(X_train)
         cost_history = np.zeros(self.n_steps)
         theta_history= np.zeros((self.n_steps, self.theta.shape[0]))
