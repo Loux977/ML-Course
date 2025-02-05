@@ -48,7 +48,7 @@ class LinearRegression:
 
             # Just for logging
             theta_history[step, :] = self.theta.T # here we store theta as a row vector
-            cost_history[step] = 1/(2*m) * np.dot(error.T,error) # in matrix form: J(θ) = 1/2m (Xθ-y)^2 = 1/2m (Xθ-y)^T * (Xθ-y)           
+            cost_history[step] = 1/(2*m) * np.dot(error,error.T) # in matrix form: J(θ) = 1/2m (Xθ-y)^2 = 1/2m (Xθ-y)^T * (Xθ-y)           
 
         return cost_history, theta_history
 
@@ -63,7 +63,7 @@ class LinearRegression:
             self.theta = self.theta - self.learning_rate * 1/m * (np.dot(X_train.T, error) + self.lmd_ * self.theta) # + derivative of l2 regularization
 
             # Just for logging
-            cost_history[step]= 1/(2*m) * (np.dot(error.T,error) + self.lmd * np.dot(self.theta[1:].T, self.theta[1:])) # + l2 regularization            
+            cost_history[step]= 1/(2*m) * (np.dot(error,error.T) + self.lmd * np.dot(self.theta[1:].T, self.theta[1:])) # + l2 regularization            
             theta_history[step, :] = self.theta.T
         
         return cost_history, theta_history
@@ -86,7 +86,7 @@ class LinearRegression:
             # Just for logging
             pred = np.dot(X_train, self.theta)
             error_train = pred - y_train
-            cost_history[step] = 1/(2*m) * np.dot(error_train.T, error_train)            
+            cost_history[step] = 1/(2*m) * np.dot(error_train, error_train.T)            
             #cost_history[step] = (1/(2*m))*np.sum(error_train)**2
             theta_history[step, :] = self.theta.T
 
@@ -107,7 +107,7 @@ class LinearRegression:
             # Just for logging
             pred = np.dot(X_train, self.theta)
             error_train = pred - y_train
-            cost_history[epoch] = 1/(2*m) * np.dot(error_train.T, error_train)            
+            cost_history[epoch] = 1/(2*m) * np.dot(error_train, error_train.T)            
             #cost_history[step] = (1/(2*m))*np.sum(error_train)**2
             theta_history[epoch, :] = self.theta.T
 
@@ -135,7 +135,7 @@ class LinearRegression:
             # Logging for cost and theta history
             pred_train = np.dot(X_train, self.theta)
             error_train = pred_train - y_train
-            cost_history[step] = 1 / (2 * m) * np.dot(error_train.T, error_train)
+            cost_history[step] = 1 / (2 * m) * np.dot(error_train, error_train.T)
             theta_history[step, :] = self.theta.T
 
         return cost_history, theta_history
@@ -158,7 +158,7 @@ class LinearRegression:
             # Just for logging                
             pred_train = np.dot(X_train, self.theta)
             error_train = pred_train - y_train
-            cost_history[epoch]= (1/(2*m)* np.dot(error_train.T, error_train))
+            cost_history[epoch]= (1/(2*m)* np.dot(error_train, error_train.T))
             theta_history[epoch, :] = self.theta.T
 
         return cost_history, theta_history
