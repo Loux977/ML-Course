@@ -10,7 +10,7 @@ This repository was created with the intention of helping future students gain a
 
 ### 📖 Contents of the Repository  
 - **Code Exercises:** Practical exercises implemented as Jupyter Notebooks (with scracth libraries implemented as Python scripts). 
-- **Theory:** Notes of the course enriched with personal insights and reflections in form of a pdf file $ + $ theoretical exercises $ + $ theory recap. 
+- **Theory:** Notes of the course enriched with personal insights and reflections in form of a pdf file + theoretical exercises + theory recap. 
 - **Additional Resources:** Links to helpful external resources for further learning.
 
 
