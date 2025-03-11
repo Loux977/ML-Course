@@ -19,22 +19,22 @@ class RegressionNeuralNetwork:
         self.seed =seed
 
         self.W = {}
-        self.B = {}
+        self.b = {}
         self.loss = []
 
     def init_parameters(self):
         np.random.seed(self.seed)
         for l in range(1, self.n_layers):
             self.W[l] = np.random.randn(self.layers[l], self.layers[l - 1])
-            self.B[l] = np.ones((self.layers[l], 1))
+            self.b[l] = np.ones((self.layers[l], 1))
 
     def forward_propagation(self, X):
         values = {}
         for l in range(1, self.n_layers):
             if l == 1:
-                values["Z" + str(l)] = np.dot(self.W[l], X) + self.B[l]
+                values["Z" + str(l)] = np.dot(self.W[l], X) + self.b[l]
             else:
-                values["Z" + str(l)] = np.dot(self.W[l], values["A" + str(l - 1)]) + self.B[l]
+                values["Z" + str(l)] = np.dot(self.W[l], values["A" + str(l - 1)]) + self.b[l]
             
             if l == self.n_layers - 1: 
                 # just for the output layer we don't apply the sigmoid activation function
@@ -83,13 +83,13 @@ class RegressionNeuralNetwork:
             else:
                 params_upd["W" + str(l)] = (1 / m) * (np.dot(dZ, values["A" + str(l - 1)].T) + self.lmd * self.W[l])
 
-            params_upd["B" + str(l)] = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
+            params_upd["b" + str(l)] = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
         return params_upd
 
     def update(self, upd):
         for l in range(1, self.n_layers):
             self.W[l] -= self.alpha * upd["W" + str(l)]
-            self.B[l] -= self.alpha * upd["B" + str(l)]
+            self.b[l] -= self.alpha * upd["b" + str(l)]
 
     def fit(self, X_train, y_train):
         # transpose X_train and y_train to align with our derivation

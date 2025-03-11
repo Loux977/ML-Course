@@ -27,7 +27,7 @@ class ClassificationNeuralNetwork:
 
         # Initialize weights, biases, and loss variables
         self.W = {}
-        self.B = {}
+        self.b = {}
         self.loss = []
 
     # Initialize weights and biases for each layer randomly
@@ -36,7 +36,7 @@ class ClassificationNeuralNetwork:
         np.random.seed(self.seed)
         for l in range(1, self.n_layers):
             self.W[l] = np.random.randn(self.layers[l], self.layers[l - 1]) # self.W[l] is a matrix of shape (units in layer l, units in layer l−1).
-            self.B[l] = np.ones((self.layers[l], 1)) # self.B[l] is a column vector of shape (units in layer l, 1)
+            self.b[l] = np.ones((self.layers[l], 1)) # self.b[l] is a column vector of shape (units in layer l, 1)
 
     # Perform forward propagation through the neural network
     def forward_propagation(self, X):
@@ -47,12 +47,12 @@ class ClassificationNeuralNetwork:
         for l in range(1, self.n_layers):
             if l == 1:
                 # Compute the weighted sum for the first layer (considering X values)
-                values["Z" + str(l)] = np.dot(self.W[l], X) + self.B[l] # we save Z^[l] values
+                values["Z" + str(l)] = np.dot(self.W[l], X) + self.b[l] # we save Z^[l] values
                 # IMPLICIT BROADCASTING: Here the bias vector for layer l has shape (d^[l], 1) and it's automatically broadcasted
                 # to match the shape (d^[l], m), so that it can be added to the result of np.dot(self.W[l], X).
             else:
                 # Compute the weighted sum for subsequent layers (considering A values of previous layer)
-                values["Z" + str(l)] = np.dot(self.W[l], values["A" + str(l - 1)]) + self.B[l]
+                values["Z" + str(l)] = np.dot(self.W[l], values["A" + str(l - 1)]) + self.b[l]
 
             # Apply the sigmoid activation function
             values["A" + str(l)] = sigmoid(values["Z" + str(l)]) # we save A^[l] values
@@ -111,7 +111,7 @@ class ClassificationNeuralNetwork:
                 params_upd["W" + str(l)] = (1 / m) * (np.dot(dZ, values["A" + str(l - 1)].T) + self.lmd * self.W[l])
 
             # Compute the bias gradients (regularization is not applied to bias)
-            params_upd["B" + str(l)] = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
+            params_upd["b" + str(l)] = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
             # Note: Here np.sum(dZ, axis=1) computes the sum of dZ (𝛿[l]) across all m training examples (axis=1) for each of
             # the d unit in layer l (i.e. dz_1_[l], dz_2_[l], ..., dz_d_[l]). This results in a vector of shape (d^[l],) where each element
             # corresponds to the total error for a single unit. keepdims=True ensures the result has shape (d^[l],1), matching the shape of self.B[i].
@@ -122,7 +122,7 @@ class ClassificationNeuralNetwork:
     def update(self, upd):
         for l in range(1, self.n_layers):
             self.W[l] -= self.alpha * upd["W" + str(l)]
-            self.B[l] -= self.alpha * upd["B" + str(l)]
+            self.b[l] -= self.alpha * upd["b" + str(l)]
 
     # Train the neural network on the provided data
     def fit(self, X_train, y_train):
