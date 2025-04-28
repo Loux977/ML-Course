@@ -25,7 +25,7 @@ class ClassificationNeuralNetwork:
         self.lmd = lmd
         self.seed =seed
 
-        # Initialize weights, biases, and loss variables
+        # Initialize weights, biases and loss variables
         self.W = {}
         self.b = {}
         self.loss = []
@@ -86,8 +86,8 @@ class ClassificationNeuralNetwork:
     def backpropagation_step(self, values, X, y):
         m = y.shape[1] # number of training examples
 
-        # Initialize a dictionary to store the parameter updates (i.e all W and B)
-        params_upd = {}
+        # Initialize a dictionary to store the parameters gradients
+        grads = {}
 
         # Initialize the derivative of the weighted sum
         dZ = None
@@ -105,24 +105,24 @@ class ClassificationNeuralNetwork:
 
             if l == 1:
                 # Compute the weight gradients for the first layer
-                params_upd["W" + str(l)] = (1 / m) * (np.dot(dZ, X.T) + self.lmd * self.W[l])
+                grads["W" + str(l)] = (1 / m) * (np.dot(dZ, X.T) + self.lmd * self.W[l])
             else:
                 # Compute the weight gradients for subsequent layers
-                params_upd["W" + str(l)] = (1 / m) * (np.dot(dZ, values["A" + str(l - 1)].T) + self.lmd * self.W[l])
+                grads["W" + str(l)] = (1 / m) * (np.dot(dZ, values["A" + str(l - 1)].T) + self.lmd * self.W[l])
 
             # Compute the bias gradients (regularization is not applied to bias)
-            params_upd["b" + str(l)] = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
+            grads["b" + str(l)] = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
             # Note: Here np.sum(dZ, axis=1) computes the sum of dZ (𝛿[l]) across all m training examples (axis=1) for each of
             # the d unit in layer l (i.e. dz_1_[l], dz_2_[l], ..., dz_d_[l]). This results in a vector of shape (d^[l],) where each element
             # corresponds to the total error for a single unit. keepdims=True ensures the result has shape (d^[l],1), matching the shape of self.B[i].
 
-        return params_upd
+        return grads
 
     # GD Update Rule: Update weights and biases based on the calculated gradients
-    def update(self, upd):
+    def update(self, grads):
         for l in range(1, self.n_layers):
-            self.W[l] -= self.alpha * upd["W" + str(l)]
-            self.b[l] -= self.alpha * upd["b" + str(l)]
+            self.W[l] -= self.alpha * grads["W" + str(l)]
+            self.b[l] -= self.alpha * grads["b" + str(l)]
 
     # Train the neural network on the provided data
     def fit(self, X_train, y_train):

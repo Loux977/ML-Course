@@ -67,7 +67,7 @@ class RegressionNeuralNetwork:
     def backpropagation_step(self, values, X, y):
         m = y.shape[1]
 
-        params_upd = {}
+        grads = {}
 
         dZ = None
         for l in range(self.n_layers - 1, 0, -1):
@@ -79,17 +79,17 @@ class RegressionNeuralNetwork:
                 dZ = np.multiply(dA, sigmoid_derivative(values["A" + str(l)]))
 
             if l == 1:
-                params_upd["W" + str(l)] = (1 / m) * (np.dot(dZ, X.T) + self.lmd * self.W[l])
+                grads["W" + str(l)] = (1 / m) * (np.dot(dZ, X.T) + self.lmd * self.W[l])
             else:
-                params_upd["W" + str(l)] = (1 / m) * (np.dot(dZ, values["A" + str(l - 1)].T) + self.lmd * self.W[l])
+                grads["W" + str(l)] = (1 / m) * (np.dot(dZ, values["A" + str(l - 1)].T) + self.lmd * self.W[l])
 
-            params_upd["b" + str(l)] = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
-        return params_upd
+            grads["b" + str(l)] = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
+        return grads
 
-    def update(self, upd):
+    def update(self, grads):
         for l in range(1, self.n_layers):
-            self.W[l] -= self.alpha * upd["W" + str(l)]
-            self.b[l] -= self.alpha * upd["b" + str(l)]
+            self.W[l] -= self.alpha * grads["W" + str(l)]
+            self.b[l] -= self.alpha * grads["b" + str(l)]
 
     def fit(self, X_train, y_train):
         # transpose X_train and y_train to align with our derivation
