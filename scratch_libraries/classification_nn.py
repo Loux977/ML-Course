@@ -25,7 +25,7 @@ class ClassificationNeuralNetwork:
         self.lmd = lmd
         self.seed =seed
 
-        # Initialize weights, biases and loss variables
+        # Initialize weights W, biases v and loss variables
         self.W = {}
         self.b = {}
         self.loss = []
